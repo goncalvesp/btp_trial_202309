@@ -1,5 +1,5 @@
-# ZRAP100_RW7N
-Objects from package ZRAP100_RW7N, from BTP Trial account (started on the 25th of September 2023)
+# RAP100 + Extras
+<img width="952" alt="image" src="https://github.com/goncalvesp/btp_trial_202309/assets/38356040/4d8fa67d-bbbc-4077-8239-63eb842b204f">
 
 ## Getting started
 TBD
@@ -12,7 +12,6 @@ TBD
 - abapGit (for more information see <a href="https://help.sap.com/docs/btp/sap-business-technology-platform/working-with-abapgit">Working with <strong>abapGit</strong></a>)
 
 ### List from ADT (in alphabetical order):
-
 Business Services
 - Service Bindings
   -  ZRAP100_UI_TRAVEL_O4_RW7 
