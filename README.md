@@ -1,15 +1,21 @@
 # RAP100 + Extras
 <img width="952" alt="image" src="https://github.com/goncalvesp/btp_trial_202309/assets/38356040/4d8fa67d-bbbc-4077-8239-63eb842b204f">
 
+## Sources
+- <a href="https://developers.sap.com/tutorials/abap-environment-trial-onboarding.html">Create an SAP BTP ABAP Environment Trial User</a>
+- <a href="https://developers.sap.com/mission.sap-fiori-abap-rap100.html"><strong>Build an SAP Fiori App Using the ABAP RESTful Application Programming Model [RAP100]</strong></a>
+- <a href="https://help.sap.com/docs/abap-cloud/abap-rap/unit-tests"><strong>Additional unit and integration tests</strong></a>
+
 ## Getting started
-TBD
+- (Optional) Complete <a href="https://developers.sap.com/tutorials/abap-environment-trial-onboarding.html">Create an SAP BTP ABAP Environment Trial User</a>
+- Complete <a href="https://developers.sap.com/mission.sap-fiori-abap-rap100.html"><strong>RAP100</strong></a>
 
 ### Prerequisites
-- github.com / gitlab.com account
 - SAP BTP ABAP Environment system
 - Subaccount and dev space in BTP
 - ABAP Development Tools (<a href="https://tools.hana.ondemand.com/#abap">ADT</a>)
-- abapGit (for more information see <a href="https://help.sap.com/docs/btp/sap-business-technology-platform/working-with-abapgit">Working with <strong>abapGit</strong></a>)
+- (Optional) github.com / gitlab.com account
+- (Optional) abapGit (for more information see <a href="https://help.sap.com/docs/btp/sap-business-technology-platform/working-with-abapgit">Working with <strong>abapGit</strong></a>)
 
 ### List from ADT (in alphabetical order):
 Business Services
@@ -52,3 +58,7 @@ Source Code Library
   - ZCL_VIRTUAL_RW7N
   - ZRAP100_BP_TRAVELTP_RW7
   - ZRAP100_TC_TRAVEL_EML_RW7
+
+## Sources
+- <a href="https://developers.sap.com/mission.sap-fiori-abap-rap100.html"><strong>RAP 100</strong></a>
+- <a href="https://help.sap.com/docs/abap-cloud/abap-rap/unit-tests"><strong>Additional unit and integration tests</strong></a>
