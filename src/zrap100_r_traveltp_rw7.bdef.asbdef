@@ -1,0 +1,108 @@
+//Managed implementation means that all required standard operations (create, update, delete) are handled by the managed RAP BO provider
+//and must only be specified in the behavior definition to obtain a ready-to-run business object
+//In this example, implementation is done in the local handler class 'lhc_travel', within global class 'ZRAP100_BP_TravelTP_RW7'
+managed implementation in class ZRAP100_BP_TravelTP_RW7 unique;
+
+//BDEF (Behavior Definition) strict mode applies additional syntax checks to RAP behavior definitions.
+strict ( 2 ); //no outdated syntax is used, implicitly available operations are declared explicitly, and a RAP BO complies to best practices
+with draft;
+
+define behavior for ZRAP100_R_TRAVELTP_RW7 alias Travel // this alias will be used for the name of the local class (if 'quick-fix' is used in ADT)
+  persistent table zrap100_atravrw7 draft table zrap100_drw7
+  //add info from UX403
+  etag master local_last_changed_at lock master total etag last_changed_at
+  //add info from UX403
+  authorization master ( global )
+  //'Numbering' is about setting values for primary key fields of entity instances during runtime.
+  //In an early numbering scenario, the primary key value is set instantly after the modify request for the CREATE is executed.
+  //The key values can be passed externally by the consumer or can be set internally by the framework or an implementation of the FOR NUMBERING method.
+  //In this example, a value for the primary key ('TravelID') is derived in method 'createEarlyNumbering' (in 'lhc_travel')
+  early numbering {
+
+    //semantic key, readonly for the consumer and value is assigned by early numbering
+    field ( readonly ) //field ( mandatory : create )
+    travel_id;
+    //input fields that cannot be empty
+    field ( mandatory ) customer_id, begin_date, end_date;
+    //changed to read only so it forces the user to use the action buttons for 'Accept/Reject Travel'
+    field ( readonly ) overall_status;
+    //administrative fields --> read only and assigned by framework
+    field ( readonly ) last_changed_at, created_at, created_by, local_last_changed_at, local_last_changed_by;
+
+    //mapping this entity's fields with the source table's field
+    //in RAP100 fields are assigned aliases, which would not be compatible with this mapping (see RAP100 mapping below)
+    mapping for zrap100_atravrw7 corresponding;
+
+    create;
+    //update and delete with dynamic instance feature control
+    //this means that on update and delete, certain conditions are evaluated and UI changes are triggered accordingly
+    //the corresponding method must contain "FOR INSTANCE FEATURES" in the declaration
+    //which in this case is 'get_instance_features'
+    update ( features : instance );
+    delete ( features : instance );
+
+    //determination that executes during creation
+    determination setStatusToOpen on modify { create; field overall_status; }
+
+    //validations invoked during save
+    //if a validation should be invoked at every change, the trigger conditions must 'on save { create; update; }'
+    //except if 'with draft' is used (which is the case, see the 'draft' validations below)
+    validation validateDates on save { create; field begin_date, end_date; }
+    //the fields AgencyID, CurrencyCode, CustomerID and OverallStatus have value help annotations in the consumption view (ZRAP100_C_TRAVELTP_RW7)
+    //one of which is 'useForValidation = true', which changes the overall behavior slightly
+    //in practice, it means that, as the user provides input for a given field, a standard/automatic validation is done directly on the UI
+    //the UI validation will therefore check the input against what is shown in the respective value help list results
+    //the validations below, in this instance, are only called after the user presses 'Save'
+    //if 'useForValidation' is set to 'false', the backend validations are called every time the input is changed
+    validation validateCustomer on save { create; field customer_id; }
+    validation validateAgency on save { create; field agency_id; }
+    validation validateStatus on save { create; field overall_status; }
+
+    //action deductDiscount result [1] $self; --> original 'deductDiscount' action (without parameter)
+
+    //enhanced 'deductDiscount' action
+    //non-factory instance-bound action
+    //meaning RAP action which offers non-standard behavior and whose custom logic must be implemented in the RAP handler method FOR MODIFY
+    //non-factory actions do not create new instances (in this case, only a property of an existing instance is changed)
+    action ( features : instance ) deductDiscount parameter ZRAP100_A_TravelDiscount result [1] $self;
+    //result --> defines the output parameter of the action
+    //however it does not affect the result of an action or function that is committed to the database
+    //cardinality --> specified between the square brackets
+    //$self --> specifies that the type of the result parameter is the same type as the entity for which the action or function is defined - i.e. the Travel entity type
+    //parameter --> abstract entity /dmo/a_travel_discount which defines a structure containing only one field, discount_percent
+    //this parameter is used for the purpose of enhancing the action 'deductDiscount' with an input parameter ('discount_percent')
+    //it also has dynamic instance feature control (conditions in method 'get_instance_features')
+
+    //factory actions are used to create RAP BO entity instances
+    //always produce one new BO entity instance with possible child entity instances
+    //so no result parameter is needed
+    factory action copyTravel [1];
+
+    //non-factory actions used to modify a travel instance's Overall Status to 'Accepted' or 'Rejected'
+    action ( features : instance ) acceptTravel result [1] $self;
+    action ( features : instance ) rejectTravel result [1] $self;
+
+    draft action ( features : instance ) Edit;
+    draft action Activate optimized;
+    draft action Discard;
+    draft action Resume;
+
+    //if "with draft" is used with "strict", there must be an explicit definition of the draft determine action "Prepare"
+    //this also means that the above validations not only execute 'on save { create; }' but also when editting a given instance
+    draft determine action Prepare {
+      validation validateCustomer;
+      validation validateDates;
+      validation validateAgency;
+      validation validateStatus;
+    }
+
+//    mapping for zrap100_atravrw7 {  //from RAP100
+//      TravelID           = travel_id;
+//      AgencyID           = agency_id;
+//      CustomerID         = customer_id;
+//      (...)
+//      LocalLastChangedBy = local_last_changed_by;
+//      LocalLastChangedAt = local_last_changed_at;
+//      LastChangedAt      = last_changed_at;
+//    }
+}
