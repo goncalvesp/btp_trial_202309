@@ -1,6 +1,12 @@
 # RAP100 + Extras
 <img width="952" alt="image" src="https://github.com/goncalvesp/btp_trial_202309/assets/38356040/4d8fa67d-bbbc-4077-8239-63eb842b204f">
 
+Some of the extras include:
+- Correction of CDS Views and corresponding Behavior Definitions (and handlers) from RAP 100  
+- Comments across multiple objects (behavior definitions, handlers, test classes, etc.) to better explain and document said objects, properties, actions, etc. (see <a href="https://github.com/goncalvesp/btp_trial_202309/blob/main/src/zrap100_r_traveltp_rw7.bdef.asbdef">Root BDEF</a> as an example)
+- Annotation/UI changes (for example, see "Travel Status" and its criticality on the picture above), behavior handling changes that resemble more realistic uses (for example, removed possibility of user being able to change from "Accepted" to "Rejected" and vice-versa)
+- <a href="https://github.com/goncalvesp/btp_trial_202309/blob/main/src/zrap100_bp_traveltp_rw7.clas.testclasses.abap">Local</a> and <a href="https://github.com/goncalvesp/btp_trial_202309/blob/main/src/zrap100_tc_travel_eml_rw7.clas.abap">Global</a> Test Classes with even more tests and examples
+
 ## Sources
 - <a href="https://developers.sap.com/tutorials/abap-environment-trial-onboarding.html">Create an SAP BTP ABAP Environment Trial User</a>
 - <a href="https://developers.sap.com/mission.sap-fiori-abap-rap100.html"><strong>Build an SAP Fiori App Using the ABAP RESTful Application Programming Model [RAP100]</strong></a>
